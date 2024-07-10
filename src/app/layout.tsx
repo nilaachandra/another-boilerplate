@@ -4,7 +4,7 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Providers } from "./provider";
-
+import { ViewTransitions } from "next-view-transitions";
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   weight: ["500", "800"],
@@ -21,7 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={bricolage.className}>
+    <ViewTransitions>
+      <html lang="en" className={bricolage.className}>
       <body className="lg:max-w-[712px] w-full p-4 mx-auto min-h-screen">
         <Providers>
           <NavBar />
@@ -30,5 +31,6 @@ export default function RootLayout({
         </Providers>
       </body>
     </html>
+    </ViewTransitions>
   );
 }

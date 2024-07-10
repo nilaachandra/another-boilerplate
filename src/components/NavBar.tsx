@@ -1,12 +1,8 @@
 "use client"
-
-import Image from "next/image";
 import React from "react";
 import ThemeToggle from "./ThemeToggler";
-import Link from "next/link";
-import { FaUser } from "react-icons/fa";
-import { Interface } from "readline";
 import { usePathname } from "next/navigation";
+import { Link } from "next-view-transitions";
 
 
 

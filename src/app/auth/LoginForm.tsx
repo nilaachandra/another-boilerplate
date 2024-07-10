@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card, CardFooter, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -27,11 +27,16 @@ const LoginForm = () => {
       password: "",
     },
   });
+
+  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    console.log(values)
+  }
+
   return (
     <Card className="w-full max-w-sm p-4 border dark:border-white border-black">
       <CardTitle className="mb-3 text-xl">Login to your account</CardTitle>
       <Form {...form}>
-        <form className="space-y-4" onSubmit={form.handleSubmit(() => {})}>
+        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-4">
             <FormField
               control={form.control}
@@ -41,9 +46,9 @@ const LoginForm = () => {
                   <FormLabel className="font-semibold">Email</FormLabel>
                   <FormControl>
                     <Input
-                      {...form}
+                      {...field}
                       placeholder="me@example.com"
-                      className="text-gray-500 dark:border-white border-black border"
+                      className=" dark:border-white border-black border"
                     />
                   </FormControl>
                   <FormMessage />
@@ -53,16 +58,16 @@ const LoginForm = () => {
 
             <FormField
               control={form.control}
-              name="email"
+              name="password"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold">Password</FormLabel>
                   <FormControl>
                     <Input
-                      {...form}
+                      {...field}
                       type="password"
                       placeholder="Enter your Password"
-                      className="text-gray-500 dark:border-white border-black border "
+                      className=" dark:border-white border-black border "
                     />
                   </FormControl>
                   <FormMessage />
@@ -70,15 +75,20 @@ const LoginForm = () => {
               )}
             />
           </div>
-          <Button className="w-full">Login</Button>
-          <CardFooter className="w-full flex flex-col">
-            <Label className="w-full flex mb-3 items-center justify-center font-semibold">Or Login with </Label>
-            <div className="w-full grid grid-cols-2 gap-2">
-              <Button className="w-full"><LuGithub size={20}/></Button>
-              <Button className="w-full"><SiGoogle size={20}/></Button>
-
+          <Button type="submit" className="w-full">Login</Button>
+          <div className="w-full flex flex-col">
+            <Label className="w-full flex mb-3 items-center justify-center font-semibold">
+              Or Login with{" "}
+            </Label>
+            <div className="w-full grid grid-cols-2 gap-1">
+              <Button className="w-full">
+                <LuGithub size={20} />
+              </Button>
+              <Button className="w-full">
+                <SiGoogle size={20} />
+              </Button>
             </div>
-          </CardFooter>
+          </div>
         </form>
       </Form>
     </Card>
