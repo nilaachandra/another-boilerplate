@@ -17,30 +17,31 @@ import { useForm } from "react-hook-form";
 import { LuGithub } from "react-icons/lu";
 import { SiGoogle } from "react-icons/si";
 import * as z from "zod";
-import { LoginSchema } from "../../../schemas";
+import { SignupSchema } from "../../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { login } from "../../../actions/login";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { signup } from "../../../actions/signup";
 
-const LoginForm = () => {
+const SignupForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof SignupSchema>>({
+    resolver: zodResolver(SignupSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof SignupSchema>) => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      login(values).then((data) => {
+      signup(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
         if (data.error) {
@@ -51,14 +52,37 @@ const LoginForm = () => {
         }
       });
     });
+    console.log(values)
   };
 
   return (
     <Card className="w-full max-w-sm p-4 border dark:border-white border-black">
-      <CardTitle className="mb-3 text-xl">Login to your account</CardTitle>
+      <CardTitle className="mb-3 text-xl">
+        Sign Up now to Create an Account
+      </CardTitle>
       <Form {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      type="text"
+                      placeholder="Enter your Name"
+                      className=" dark:border-white border-black border "
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="email"
@@ -105,12 +129,12 @@ const LoginForm = () => {
                 <span>Please Wait</span>
               </>
             ) : (
-              "Log In"
+              <span>Sign Up</span>
             )}
           </Button>
           <div className="w-full flex flex-col">
             <Label className="w-full flex mb-3 items-center justify-center font-semibold">
-              Or Login with{" "}
+              Or Signup with{" "}
             </Label>
             <div className="w-full grid grid-cols-2 gap-1">
               <Button className="w-full" disabled={isPending}>
@@ -127,4 +151,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignupForm;
