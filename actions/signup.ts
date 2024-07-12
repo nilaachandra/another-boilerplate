@@ -3,7 +3,6 @@ import * as z from 'zod'
 import { SignupSchema } from '../schemas'
 import bcrypt from 'bcrypt'
 import prisma from '../prisma/client'
-import { error } from 'console'
 import { getUserByEmail } from '../data/user'
 
 export const signup = async (values: z.infer<typeof SignupSchema>) => {
