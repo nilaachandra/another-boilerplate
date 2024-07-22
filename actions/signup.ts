@@ -2,8 +2,9 @@
 import * as z from 'zod'
 import { SignupSchema } from '../schemas'
 import bcrypt from 'bcrypt'
-import prisma from '../prisma/client'
+
 import { getUserByEmail } from '../data/user'
+import { db } from '@/lib/db'
 
 export const signup = async (values: z.infer<typeof SignupSchema>) => {
     const validatedFields = SignupSchema.safeParse(values);
@@ -22,7 +23,7 @@ export const signup = async (values: z.infer<typeof SignupSchema>) => {
     }
 
     //creating the user
-    await prisma.user.create({
+    await db.user.create({
         data: {
             name,
             email,
