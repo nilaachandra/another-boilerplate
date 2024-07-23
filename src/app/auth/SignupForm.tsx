@@ -17,11 +17,11 @@ import { useForm } from "react-hook-form";
 import { LuGithub } from "react-icons/lu";
 import { SiGoogle } from "react-icons/si";
 import * as z from "zod";
-import { SignupSchema } from "../../../schemas";
+import { SignupSchema } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { signup } from "../../../actions/signup";
+import { signup } from "../../actions/signup";
 
 const SignupForm = () => {
   const [error, setError] = useState<string | undefined>("");

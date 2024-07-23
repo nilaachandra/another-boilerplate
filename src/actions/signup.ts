@@ -1,10 +1,10 @@
 "use server"
 import * as z from 'zod'
-import { SignupSchema } from '../schemas'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
-import { getUserByEmail } from '../data/user'
 import { db } from '@/lib/db'
+import { getUserByEmail } from '@/data/user'
+import { SignupSchema } from '@/schemas'
 
 export const signup = async (values: z.infer<typeof SignupSchema>) => {
     const validatedFields = SignupSchema.safeParse(values);
