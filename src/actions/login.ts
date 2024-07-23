@@ -8,6 +8,7 @@ import { LoginSchema } from '@/schemas';
 type LoginResponse = {
   error?: string;
   success?: string;
+  redirectTo?: string;
 };
 
 export const login = async (values: z.infer<typeof LoginSchema>): Promise<LoginResponse> => {
@@ -18,12 +19,17 @@ export const login = async (values: z.infer<typeof LoginSchema>): Promise<LoginR
 
   const { email, password } = validatedFields.data;
   try {
-    await signIn('credentials', {
+    const response = await signIn('credentials', {
       email,
       password,
-      redirectTo: defaultLoginRedirect,
+      redirect: false, // Disable automatic redirect
     });
-    return { success: 'Login successful!' }; // Ensure a success message is returned
+
+    if (response?.error) {
+      return { error: response.error };
+    }
+
+    return { success: 'Login successful!', redirectTo: defaultLoginRedirect };
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
@@ -34,6 +40,6 @@ export const login = async (values: z.infer<typeof LoginSchema>): Promise<LoginR
       }
     }
 
-    return { error: "Something Went Wrong" }; // Ensure a generic error message is returned
+    return { error: "Something Went Wrong" };
   }
 };

@@ -22,8 +22,10 @@ import { toast } from "sonner";
 import { login } from "@/actions/login";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { LoginSchema } from "@/schemas";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
+  const router = useRouter();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -41,13 +43,16 @@ const LoginForm = () => {
     setSuccess("");
     startTransition(() => {
       login(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
         if (data.error) {
+          setError(data.error);
           toast.error(data.error);
         }
         if (data.success) {
+          setSuccess(data.success);
           toast.success(data.success);
+          if (data.redirectTo) {
+            router.push(data.redirectTo);
+          }
         }
       });
     });
