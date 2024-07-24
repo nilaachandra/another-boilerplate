@@ -23,6 +23,8 @@ import { login } from "@/actions/login";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { LoginSchema } from "@/schemas";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { defaultLoginRedirect } from "@/routes";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -55,6 +57,13 @@ const LoginForm = () => {
           }
         }
       });
+    });
+  };
+
+  // Social login
+  const socialsLogin = (provider: "github") => {
+    signIn(provider, {
+      callbackUrl: defaultLoginRedirect,
     });
   };
 
@@ -113,20 +122,21 @@ const LoginForm = () => {
               "Log In"
             )}
           </Button>
-          <div className="w-full flex flex-col">
-            <Label className="w-full flex mb-3 items-center justify-center font-semibold">
-              Or Login with{" "}
-            </Label>
-            <div className="w-full grid grid-cols-2 gap-1">
-              <Button className="w-full" disabled={isPending}>
-                <LuGithub size={20} />
-              </Button>
-              <Button className="w-full" disabled={isPending}>
-                <SiGoogle size={20} />
-              </Button>
-            </div>
-          </div>
         </form>
+        <div className="w-full flex flex-col">
+          <Label className="w-full flex my-3 items-center justify-center font-semibold">
+            Or Login with
+          </Label>
+          <div className="w-full">
+            <Button
+              className="w-full"
+              onClick={() => socialsLogin("github")}
+              disabled={isPending}
+            >
+              <LuGithub size={20} />
+            </Button>
+          </div>
+        </div>
       </Form>
     </Card>
   );

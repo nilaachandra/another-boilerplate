@@ -22,6 +22,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { signup } from "../../actions/signup";
+import { signIn } from "next-auth/react";
+import { defaultLoginRedirect } from "@/routes";
 
 const SignupForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -54,6 +56,13 @@ const SignupForm = () => {
     });
     console.log(values)
   };
+//socials login 
+const socialsLogin = () => {
+  signIn("github", {
+    callbackUrl: defaultLoginRedirect,
+  });
+};
+
 
   return (
     <Card className="w-full max-w-sm p-4 border dark:border-white border-black">
@@ -136,12 +145,9 @@ const SignupForm = () => {
             <Label className="w-full flex mb-3 items-center justify-center font-semibold">
               Or Signup with{" "}
             </Label>
-            <div className="w-full grid grid-cols-2 gap-1">
+            <div className="w-full">
               <Button className="w-full" disabled={isPending}>
                 <LuGithub size={20} />
-              </Button>
-              <Button className="w-full" disabled={isPending}>
-                <SiGoogle size={20} />
               </Button>
             </div>
           </div>

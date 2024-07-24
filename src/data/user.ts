@@ -1,28 +1,27 @@
-import { db } from "@/lib/db";
+import { db } from '@/lib/db';
 
-
-export const getUserByEmail = async (email: string) => {
+export async function getUserByEmail(email: string | null | undefined) {
+    if (!email) return null;
+    
     try {
-        const user = await db.user.findUnique({
-            where: {
-                email
-            }
-        })
+        const user = await db.user.findUnique({ 
+            where: { email },
+            include: { accounts: true } // Include linked accounts
+        });
         return user;
-    } catch (error) {
+    } catch {
         return null;
     }
 }
 
-export const getUserByID = async (id: string) => {
+export async function getUserByID(id: string) {
     try {
-        const user = await db.user.findUnique({
-            where: {
-                id
-            }
-        })
+        const user = await db.user.findUnique({ 
+            where: { id },
+            include: { accounts: true } // Include linked accounts
+        });
         return user;
-    } catch (error) {
+    } catch {
         return null;
     }
 }
